@@ -1,6 +1,6 @@
 import { render, RenderResult } from "@testing-library/react";
 import { Counter } from ".";
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
 let counter: RenderResult;
 
@@ -55,8 +55,33 @@ describe("Counter component test", () => {
 
   test("If 0, the decrement button cannot be pressed", async () => {
     counter = await render(<Counter />);
-    const decrementButton = await counter.getByRole("button", { name: "Decrement" });
+    const decrementButton = await counter.getByRole("button", {
+      name: "Decrement",
+    });
 
     expect(decrementButton).toBeDisabled();
+  });
+
+  test("Reset button view test", async () => {
+    counter = await render(<Counter />);
+
+    expect(counter.getByText("Reset")).toBeDefined();
+  });
+
+  test("Reset button click test", async () => {
+    counter = await render(<Counter />);
+    const incrementButton = await counter.getByText("Increment");
+    await incrementButton.click();
+    const resetButton = await counter.getByText("Reset");
+    await resetButton.click();
+
+    expect(counter.getByText("0")).toBeDefined();
+  });
+
+  test("If 0, the reset button cannot be pressed", async () => {
+    counter = await render(<Counter />);
+    const resetButton = await counter.getByRole("button", { name: "Reset" });
+
+    expect(resetButton).toBeDisabled();
   });
 });

@@ -13,12 +13,19 @@ export const Counter = () => {
     }
   }
 
+  function handleReset() {
+    setCount(0);
+  }
+
   return (
     <>
       <p>Welcome To Counter App</p>
       <button onClick={handleIncrement}>Increment</button>
       <button onClick={handleDecrement} disabled={count <= 0}>
         Decrement
+      </button>
+      <button onClick={handleReset} disabled={count <= 0}>
+        Reset
       </button>
       <p>{count}</p>
     </>
