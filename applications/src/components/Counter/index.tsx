@@ -17,7 +17,9 @@ export const Counter = () => {
     <>
       <p>Welcome To Counter App</p>
       <button onClick={handleIncrement}>Increment</button>
-      <button onClick={handleDecrement}>Decrement</button>
+      <button onClick={handleDecrement} disabled={count <= 0}>
+        Decrement
+      </button>
       <p>{count}</p>
     </>
   );
