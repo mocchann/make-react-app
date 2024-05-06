@@ -2,17 +2,17 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const NotFound = (): JSX.Element => {
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const redirectTimeout = setTimeout(() => {
-      history("/");
+      navigate("/");
     }, 3000);
 
     return () => {
       clearTimeout(redirectTimeout);
     };
-  }, [history]);
+  }, [navigate]);
 
   return <p>404 Page Not Found</p>;
 };
