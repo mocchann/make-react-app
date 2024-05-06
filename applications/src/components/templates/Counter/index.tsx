@@ -1,23 +1,25 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { useState } from "react";
+import { Counter } from "../../organisms/Main/Counter/Counter";
+import { HeaderItems } from "../../organisms/Header/HeaderItems";
 
-export const Counter = () => {
+export const CounterTemplate = (): JSX.Element => {
   const [count, setCount] = useState(0);
 
-  function handleIncrement() {
+  const handleIncrement = (): void => {
     setCount(count + 1);
-  }
+  };
 
-  function handleDecrement() {
+  const handleDecrement = (): void => {
     if (count > 0) {
       setCount(count - 1);
     }
-  }
+  };
 
-  function handleReset() {
+  const handleReset = (): void => {
     setCount(0);
-  }
+  };
 
   const button = css`
     button {
@@ -63,16 +65,16 @@ export const Counter = () => {
   `;
 
   return (
-    <div css={[button, p]}>
-      <p>Welcome To Counter App</p>
-      <button onClick={handleIncrement}>Increment</button>
-      <button onClick={handleDecrement} disabled={count <= 0}>
-        Decrement
-      </button>
-      <button onClick={handleReset} disabled={count <= 0}>
-        Reset
-      </button>
-      <p>{count}</p>
-    </div>
+    <>
+      <HeaderItems />
+      <div css={[button, p]}>
+        <Counter
+          count={count}
+          handleIncrement={handleIncrement}
+          handleDecrement={handleDecrement}
+          handleReset={handleReset}
+        />
+      </div>
+    </>
   );
 };
