@@ -1,7 +1,8 @@
-export type CountProps = {
-  count: number;
-};
+import { useContext } from "react";
+import { CountContext } from "../../../../templates/Counter";
 
-export const DisplayCount = ({ count }: CountProps): JSX.Element => (
-  <p>{count}</p>
-);
+export const DisplayCount = (): JSX.Element => {
+  const { count } = useContext(CountContext);
+
+  return <p>{count}</p>;
+};
