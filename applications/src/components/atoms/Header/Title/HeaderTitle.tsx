@@ -1,1 +1,1 @@
-export const HeaderTitle = () => <h1>React Applications Menu</h1>;
+export const HeaderTitle = (): JSX.Element => <h1>React Applications Menu</h1>;
