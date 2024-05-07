@@ -1,9 +1,8 @@
-export type IncrementButtonProps = {
-  handleIncrement: () => void;
-};
+import { useContext } from "react";
+import { CountContext } from "../../../../templates/Counter";
 
-export const IncrementButton = ({
-  handleIncrement,
-}: IncrementButtonProps): JSX.Element => {
+export const IncrementButton = (): JSX.Element => {
+  const { handleIncrement } = useContext(CountContext);
+
   return <button onClick={handleIncrement}>Increment</button>;
 };

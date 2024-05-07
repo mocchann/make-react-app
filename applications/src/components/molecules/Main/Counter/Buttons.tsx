@@ -1,31 +1,13 @@
-import {
-  DecrementButton,
-  decrementButtonProps,
-} from "../../../atoms/Main/Counter/Button/DecrementButton";
-import {
-  IncrementButton,
-  IncrementButtonProps,
-} from "../../../atoms/Main/Counter/Button/IncrementButton";
-import {
-  ResetButton,
-  ResetButtonProps,
-} from "../../../atoms/Main/Counter/Button/ResetButton";
+import { DecrementButton } from "../../../atoms/Main/Counter/Button/DecrementButton";
+import { IncrementButton } from "../../../atoms/Main/Counter/Button/IncrementButton";
+import { ResetButton } from "../../../atoms/Main/Counter/Button/ResetButton";
 
-export type ButtonsProps = IncrementButtonProps &
-  decrementButtonProps &
-  ResetButtonProps;
-
-export const Buttons = ({
-  count,
-  handleIncrement,
-  handleDecrement,
-  handleReset,
-}: ButtonsProps): JSX.Element => {
+export const Buttons = (): JSX.Element => {
   return (
     <>
-      <IncrementButton handleIncrement={handleIncrement} />
-      <DecrementButton count={count} handleDecrement={handleDecrement} />
-      <ResetButton count={count} handleReset={handleReset} />
+      <IncrementButton />
+      <DecrementButton />
+      <ResetButton />
     </>
   );
 };
