@@ -1,8 +1,20 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { createContext, useState } from "react";
 import { Counter } from "../../organisms/Main/Counter/Counter";
 import { HeaderItems } from "../../organisms/Header/HeaderItems";
+
+type CountContextType = {
+  count: number;
+  setCount: (count: number) => void;
+  handleIncrement: () => void;
+  handleDecrement: () => void;
+  handleReset: () => void;
+};
+
+export const CountContext = createContext<CountContextType>(
+  {} as CountContextType
+);
 
 export const CounterTemplate = (): JSX.Element => {
   const [count, setCount] = useState(0);
@@ -68,12 +80,17 @@ export const CounterTemplate = (): JSX.Element => {
     <>
       <HeaderItems />
       <div css={[button, p]}>
-        <Counter
-          count={count}
-          handleIncrement={handleIncrement}
-          handleDecrement={handleDecrement}
-          handleReset={handleReset}
-        />
+        <CountContext.Provider
+          value={{
+            count,
+            setCount,
+            handleIncrement,
+            handleDecrement,
+            handleReset,
+          }}
+        >
+          <Counter />
+        </CountContext.Provider>
       </div>
     </>
   );
