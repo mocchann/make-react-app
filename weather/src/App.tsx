@@ -3,20 +3,34 @@ import { useState, useEffect } from "react";
 export const Weather = () => {
   const [weatherData, setWeatherData] = useState<any>(null);
 
-  const fetchWeatherData = (latitude: any, longitude: any) => {
-    fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}`
+  const fetchWeatherData = async (latitude: any, longitude: any) => {
+    console.log(latitude, longitude);
+    await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
     )
       .then((response) => response.json())
-      .then((data) => setWeatherData(data));
+      .then((data) => {
+        console.log(data);
+        setWeatherData(data);
+      });
   };
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
+    const handleSuccess = (position: GeolocationPosition) => {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
       fetchWeatherData(latitude, longitude);
-    });
+    };
+
+    const handleError = (error: GeolocationPositionError) => {
+      console.error(error);
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
   }, []);
 
   return (
@@ -24,8 +38,7 @@ export const Weather = () => {
       {weatherData && (
         <>
           <h2>Weather App</h2>
-          <p>気温: {weatherData.temperature}°C</p>
-          <p>湿度: {weatherData.humidity}%</p>
+          <p>気温: {weatherData.current_weather.temperature}°C</p>
         </>
       )}
     </>
