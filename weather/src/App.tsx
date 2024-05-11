@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
+import { displayWeatherPattern } from "./components/DisplayWeatherPattern";
+import { fetchWeatherApi } from "openmeteo";
 
 export const Weather = () => {
   const [weatherData, setWeatherData] = useState<any>(null);
+  const [currentWeather, setCurrentWeather] = useState<string>("");
 
-  const fetchWeatherData = async (latitude: any, longitude: any) => {
+  const fetchWeatherData = async (latitude: number, longitude: number) => {
     console.log(latitude, longitude);
     await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
@@ -33,14 +36,18 @@ export const Weather = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (weatherData) {
+      const currentWeather = displayWeatherPattern(weatherData);
+      setCurrentWeather(currentWeather);
+    }
+  }, [weatherData]);
+
   return (
     <>
-      {weatherData && (
-        <>
-          <h2>Weather App</h2>
-          <p>気温: {weatherData.current_weather.temperature}°C</p>
-        </>
-      )}
+      <h2>Weather App</h2>
+      <p>現在の天気: {currentWeather}</p>
+      <p>気温: {weatherData?.current_weather.temperature}°C</p>
     </>
   );
 };
