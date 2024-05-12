@@ -1,76 +1,40 @@
 import { useState, useEffect } from "react";
 import { getWeatherFromCode } from "./components/getWeatherFromCode";
-import { fetchWeatherApi } from "openmeteo";
 import { getDayOfWeek } from "./components/getDayOfWeek";
+import { weatherDataType } from "./types/weatherDataType";
+import { fetchWeatherData } from "./components/fetchWeatherData";
+
+const initialWeatherData: weatherDataType = {
+  daily: {
+    weeklyWeatherDateTime: [],
+    weatherCode: [],
+    temperature2mMax: [],
+    temperature2mMin: [],
+    precipitationProbabilityMean: [],
+  },
+  current_weather: { weathercode: 0 },
+};
 
 export const Weather = () => {
-  const [weatherData, setWeatherData] = useState<{
-    daily: any;
-    current_weather: { weathercode: number };
-  }>({ daily: {}, current_weather: { weathercode: 0 } });
-
-  const fetchWeatherData = async (latitude: number, longitude: number) => {
-    const url = "https://api.open-meteo.com/v1/forecast";
-    const params = {
-      latitude: latitude,
-      longitude: longitude,
-      daily: [
-        "weather_code",
-        "temperature_2m_max",
-        "temperature_2m_min",
-        "precipitation_probability_mean",
-      ],
-    };
-
-    const responses = await fetchWeatherApi(url, params);
-
-    const range = (start: number, stop: number, step: number) =>
-      Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
-
-    const response = responses[0];
-    const utcOffsetSeconds = response.utcOffsetSeconds();
-    const daily = response.daily();
-
-    const fetchWeatherApiResult = {
-      daily: {
-        time: daily
-          ? range(
-              Number(daily.time()),
-              Number(daily.timeEnd()),
-              daily.interval()
-            ).map((t) => new Date((t + utcOffsetSeconds) * 1000))
-          : [],
-        weatherCode: daily?.variables(0)?.valuesArray() ?? [],
-        temperature2mMax: daily?.variables(1)?.valuesArray() ?? [],
-        temperature2mMin: daily?.variables(2)?.valuesArray() ?? [],
-        precipitationProbabilityMean: daily?.variables(3)?.valuesArray() ?? [],
-      },
-    };
-    console.log(fetchWeatherApiResult.daily.time);
-
-    setWeatherData((beforeWeatherData) => ({
-      ...beforeWeatherData,
-      daily: fetchWeatherApiResult.daily,
-    }));
-  };
+  const [weatherData, setWeatherData] =
+    useState<weatherDataType>(initialWeatherData);
 
   useEffect(() => {
-    const handleSuccess = (position: GeolocationPosition) => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-      fetchWeatherData(latitude, longitude);
+    const fetchWeatherDataWithGeolocation = async () => {
+      try {
+        const position = await new Promise<GeolocationPosition>(
+          (resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          }
+        );
+        const { latitude, longitude } = position.coords;
+        await fetchWeatherData(setWeatherData, latitude, longitude);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
-    const handleError = (error: GeolocationPositionError) => {
-      console.error(error);
-    };
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
+    fetchWeatherDataWithGeolocation();
   }, []);
 
   return (
@@ -78,13 +42,13 @@ export const Weather = () => {
       <h1>Weather App</h1>
       {weatherData &&
         weatherData.daily &&
-        weatherData.daily.time &&
+        weatherData.daily.weeklyWeatherDateTime &&
         weatherData.daily.weatherCode &&
         weatherData.daily.temperature2mMax &&
         weatherData.daily.temperature2mMin &&
         weatherData.daily.precipitationProbabilityMean && (
           <>
-            {weatherData.daily.time.map((_: never, i: number) => (
+            {weatherData.daily.weeklyWeatherDateTime.map((_, i: number) => (
               <>
                 <div key={i}>
                   {i === 0 ? (
@@ -94,7 +58,11 @@ export const Weather = () => {
                   )}
                   <hr />
                   <p>
-                    <h3>{getDayOfWeek(weatherData.daily.time[i])}</h3>
+                    <h3>
+                      {getDayOfWeek(
+                        weatherData.daily.weeklyWeatherDateTime[i].toString()
+                      )}
+                    </h3>
                   </p>
                   <p>{`天気: ${getWeatherFromCode(
                     weatherData.daily.weatherCode[i]
