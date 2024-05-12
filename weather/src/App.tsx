@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
-import { displayWeatherPattern } from "./components/DisplayWeatherPattern";
+import { getWeatherFromCode } from "./components/getWeatherFromCode";
 import { fetchWeatherApi } from "openmeteo";
+import { getDayOfWeek } from "./components/getDayOfWeek";
 
 export const Weather = () => {
   const [weatherData, setWeatherData] = useState<{
     daily: any;
     current_weather: { weathercode: number };
   }>({ daily: {}, current_weather: { weathercode: 0 } });
-  const [currentWeather, setCurrentWeather] = useState<string>("");
 
   const fetchWeatherData = async (latitude: number, longitude: number) => {
-    console.log(latitude, longitude);
     const url = "https://api.open-meteo.com/v1/forecast";
     const params = {
       latitude: latitude,
@@ -19,10 +18,10 @@ export const Weather = () => {
         "weather_code",
         "temperature_2m_max",
         "temperature_2m_min",
-        "precipitation_probability_max",
-        "wind_speed_10m_max",
+        "precipitation_probability_mean",
       ],
     };
+
     const responses = await fetchWeatherApi(url, params);
 
     const range = (start: number, stop: number, step: number) =>
@@ -44,13 +43,13 @@ export const Weather = () => {
         weatherCode: daily?.variables(0)?.valuesArray() ?? [],
         temperature2mMax: daily?.variables(1)?.valuesArray() ?? [],
         temperature2mMin: daily?.variables(2)?.valuesArray() ?? [],
-        precipitationProbabilityMax: daily?.variables(3)?.valuesArray() ?? [],
-        windSpeed10mMax: daily?.variables(4)?.valuesArray() ?? [],
+        precipitationProbabilityMean: daily?.variables(3)?.valuesArray() ?? [],
       },
     };
+    console.log(fetchWeatherApiResult.daily.time);
 
-    setWeatherData((prevData) => ({
-      ...prevData,
+    setWeatherData((beforeWeatherData) => ({
+      ...beforeWeatherData,
       daily: fetchWeatherApiResult.daily,
     }));
   };
@@ -59,6 +58,7 @@ export const Weather = () => {
     const handleSuccess = (position: GeolocationPosition) => {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
+      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
       fetchWeatherData(latitude, longitude);
     };
 
@@ -73,29 +73,48 @@ export const Weather = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(weatherData);
-    if (weatherData) {
-      const currentWeather = displayWeatherPattern(weatherData);
-      setCurrentWeather(currentWeather);
-    }
-  }, [weatherData]);
-
   return (
     <>
-      <h2>Weather App</h2>
+      <h1>Weather App</h1>
       {weatherData &&
         weatherData.daily &&
+        weatherData.daily.time &&
+        weatherData.daily.weatherCode &&
         weatherData.daily.temperature2mMax &&
-        weatherData.daily.temperature2mMin && (
+        weatherData.daily.temperature2mMin &&
+        weatherData.daily.precipitationProbabilityMean && (
           <>
-            <p>現在の天気: {currentWeather}</p>
-            <p>
-              最高気温: {weatherData.daily.temperature2mMax[0].toFixed(1)}°C
-            </p>
-            <p>
-              最低気温: {weatherData.daily.temperature2mMin[0].toFixed(1)}°C
-            </p>
+            {weatherData.daily.time.map((_: never, i: number) => (
+              <>
+                <div key={i}>
+                  {i === 0 ? (
+                    <h2>今日の天気</h2>
+                  ) : (
+                    i === 1 && <h2>週間天気予報</h2>
+                  )}
+                  <hr />
+                  <p>
+                    <h3>{getDayOfWeek(weatherData.daily.time[i])}</h3>
+                  </p>
+                  <p>{`天気: ${getWeatherFromCode(
+                    weatherData.daily.weatherCode[i]
+                  )}`}</p>
+                  <p>
+                    {`最高気温: ${weatherData.daily.temperature2mMax[i].toFixed(
+                      1
+                    )} °C`}
+                  </p>
+                  <p>
+                    {`最低気温: ${weatherData.daily.temperature2mMin[i].toFixed(
+                      1
+                    )} °C`}
+                  </p>
+                  <p>{`降水確率: ${weatherData.daily.precipitationProbabilityMean[
+                    i
+                  ].toFixed(1)} %`}</p>
+                </div>
+              </>
+            ))}
           </>
         )}
     </>
