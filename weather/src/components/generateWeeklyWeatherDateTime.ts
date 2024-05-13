@@ -2,15 +2,15 @@ import { generateWeekRange } from "./generateWeekRange";
 import { VariablesWithTime } from "@openmeteo/sdk/variables-with-time";
 
 export const generateWeeklyWeatherDateTime = (
-  daily: VariablesWithTime | null,
+  weatherCondition: VariablesWithTime | null,
   utcOffsetSeconds: number
 ): Date[] => {
-  if (!daily) return [];
+  if (!weatherCondition) return [];
 
   const weekRange = generateWeekRange(
-    Number(daily.time()),
-    Number(daily.timeEnd()),
-    daily.interval()
+    Number(weatherCondition.time()),
+    Number(weatherCondition.timeEnd()),
+    weatherCondition.interval()
   );
 
   return weekRange.map((t) => new Date((t + utcOffsetSeconds) * 1000));

@@ -1,10 +1,10 @@
 import { fetchWeatherApi } from "openmeteo";
 import { dailyWeatherVariables } from "../constants/dailyWeatherVariables";
 import { OPEN_API_URL } from "../constants/openApiUrl";
-import { generateDailyWeatherData } from "./generateDailyWeatherData";
 import { weatherDataType } from "../types/weatherDataType";
+import { generateWetherCondition } from "./generateWetherCondition";
 
-export const fetchWeatherData = async (
+export const execApiAndSetWeatherData = async (
   setWeatherData: React.Dispatch<React.SetStateAction<weatherDataType>>,
   latitude: number,
   longitude: number
@@ -17,13 +17,13 @@ export const fetchWeatherData = async (
 
   const responses = await fetchWeatherApi(OPEN_API_URL, requestParams);
 
-  const fetchWeatherApiResult = generateDailyWeatherData(
+  const fetchWeatherApiResult = generateWetherCondition(
     responses[0].daily(),
     responses[0].utcOffsetSeconds()
   );
 
   setWeatherData((beforeWeatherData) => ({
     ...beforeWeatherData,
-    daily: fetchWeatherApiResult.daily,
+    weatherCondition: fetchWeatherApiResult.weatherCondition,
   }));
 };
