@@ -1,6 +1,6 @@
-import { weatherDailyType } from "./weatherDailyType";
+import { weatherConditionType } from "./weatherConditionType";
 
 export type weatherDataType = {
-  daily: weatherDailyType;
-  current_weather: { weathercode: number };
+  weatherCondition: weatherConditionType;
+  currentWeather: { weathercode: number };
 };
