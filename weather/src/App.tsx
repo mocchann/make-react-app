@@ -37,54 +37,50 @@ export const Weather = () => {
     fetchWeatherDataWithGeolocation();
   }, []);
 
+  if (!weatherData) return <div>loading...</div>;
+
+  const formattedWeatherData = weatherData.daily.weeklyWeatherDateTime.map(
+    (_, i: number) => {
+      const weeklyWeatherDateTime = getDayOfWeek(
+        weatherData.daily.weeklyWeatherDateTime[i].toString()
+      );
+      const wetherCode = getWeatherFromCode(weatherData.daily.weatherCode[i]);
+      const temperature2mMax = weatherData.daily.temperature2mMax[i].toFixed(1);
+      const temperature2mMin = weatherData.daily.temperature2mMin[i].toFixed(1);
+      const precipitationProbabilityMean =
+        weatherData.daily.precipitationProbabilityMean[i].toFixed(1);
+
+      return {
+        weeklyWeatherDateTime,
+        wetherCode,
+        temperature2mMax,
+        temperature2mMin,
+        precipitationProbabilityMean,
+      };
+    }
+  );
+
   return (
     <>
       <h1>Weather App</h1>
-      {weatherData &&
-        weatherData.daily &&
-        weatherData.daily.weeklyWeatherDateTime &&
-        weatherData.daily.weatherCode &&
-        weatherData.daily.temperature2mMax &&
-        weatherData.daily.temperature2mMin &&
-        weatherData.daily.precipitationProbabilityMean && (
-          <>
-            {weatherData.daily.weeklyWeatherDateTime.map((_, i: number) => (
-              <>
-                <div key={i}>
-                  {i === 0 ? (
-                    <h2>今日の天気</h2>
-                  ) : (
-                    i === 1 && <h2>週間天気予報</h2>
-                  )}
-                  <hr />
-                  <p>
-                    <h3>
-                      {getDayOfWeek(
-                        weatherData.daily.weeklyWeatherDateTime[i].toString()
-                      )}
-                    </h3>
-                  </p>
-                  <p>{`天気: ${getWeatherFromCode(
-                    weatherData.daily.weatherCode[i]
-                  )}`}</p>
-                  <p>
-                    {`最高気温: ${weatherData.daily.temperature2mMax[i].toFixed(
-                      1
-                    )} °C`}
-                  </p>
-                  <p>
-                    {`最低気温: ${weatherData.daily.temperature2mMin[i].toFixed(
-                      1
-                    )} °C`}
-                  </p>
-                  <p>{`降水確率: ${weatherData.daily.precipitationProbabilityMean[
-                    i
-                  ].toFixed(1)} %`}</p>
-                </div>
-              </>
-            ))}
-          </>
-        )}
+      {
+        <>
+          {formattedWeatherData.map((data, i) => (
+            <div key={i}>
+              {i === 0 && <h2>今日の天気</h2>}
+              {i === 1 && <h2>週間天気予報</h2>}
+              <hr />
+              <p>
+                <h3>{data.weeklyWeatherDateTime}</h3>
+              </p>
+              <p>{`天気: ${data.wetherCode}`}</p>
+              <p>{`最高気温: ${data.temperature2mMax} °C`}</p>
+              <p>{`最低気温: ${data.temperature2mMin} °C`}</p>
+              <p>{`降水確率: ${data.precipitationProbabilityMean} %`}</p>
+            </div>
+          ))}
+        </>
+      }
     </>
   );
 };
