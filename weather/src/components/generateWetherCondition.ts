@@ -4,20 +4,17 @@ import { weatherConditionType } from "../types/weatherConditionType";
 import { getWeatherConditionValues } from "./getWeatherConditionValues";
 
 export const generateWetherCondition = (
-  weatherCondition: VariablesWithTime | null,
+  daily: VariablesWithTime | null,
   utcOffsetSeconds: number
 ): { weatherCondition: weatherConditionType } => {
   const weeklyWeatherDateTime = generateWeeklyWeatherDateTime(
-    weatherCondition,
+    daily,
     utcOffsetSeconds
   );
-  const weatherCode = getWeatherConditionValues(weatherCondition, 0);
-  const temperature2mMax = getWeatherConditionValues(weatherCondition, 1);
-  const temperature2mMin = getWeatherConditionValues(weatherCondition, 2);
-  const precipitationProbabilityMean = getWeatherConditionValues(
-    weatherCondition,
-    3
-  );
+  const weatherCode = getWeatherConditionValues(daily, 0);
+  const temperature2mMax = getWeatherConditionValues(daily, 1);
+  const temperature2mMin = getWeatherConditionValues(daily, 2);
+  const precipitationProbabilityMean = getWeatherConditionValues(daily, 3);
 
   return {
     weatherCondition: {
