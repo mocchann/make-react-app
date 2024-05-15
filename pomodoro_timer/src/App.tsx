@@ -36,6 +36,7 @@ function App() {
       handleStop();
       setIsRunning(!isRunning);
       setTime(isRunning ? 5 * 60 : 25 * 60);
+      handleStart();
     }
   }, [time, isRunning]);
 
