@@ -7,9 +7,14 @@ function App() {
   const [intervalId, setIntervalId] = useState<number | undefined>(undefined);
 
   const handleStart = () => {
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+
     const id = setInterval(() => {
       setTime((prevTime) => prevTime - 1);
     }, 1000);
+
     setIntervalId(id);
   };
 
