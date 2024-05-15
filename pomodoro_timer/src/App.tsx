@@ -2,43 +2,46 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-  const [time, setTime] = useState<number>(25 * 60);
+  const [time, setTime] = useState<number>(2 * 60);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [intervalId, setIntervalId] = useState<number | undefined>(undefined);
+  const [isWorkTime, setIsWorkTime] = useState<boolean>(true);
 
   const handleStart = () => {
-    if (intervalId) {
-      clearInterval(intervalId);
+    if (!isRunning) {
+      const id = setInterval(() => {
+        setTime((prevTime) => prevTime - 1);
+      }, 1000);
+
+      setIntervalId(id);
+      setIsRunning(true);
     }
-
-    const id = setInterval(() => {
-      setTime((prevTime) => prevTime - 1);
-    }, 1000);
-
-    setIntervalId(id);
   };
 
   const handleStop = () => {
-    if (intervalId) {
+    if (intervalId && isRunning) {
       clearInterval(intervalId);
       setIntervalId(undefined);
+      setIsRunning(false);
     }
   };
 
   const handleReset = () => {
     handleStop();
-    setIsRunning(true);
-    setTime(25 * 60);
+    setTime(2 * 60);
   };
 
   useEffect(() => {
     if (time <= 0) {
       handleStop();
-      setIsRunning(!isRunning);
-      setTime(isRunning ? 5 * 60 : 25 * 60);
-      handleStart();
+      setIsWorkTime((prevIsWorkTime) => {
+        const nextIsWorkTime = !prevIsWorkTime;
+        setTime(nextIsWorkTime ? 1 * 60 : 2 * 60);
+        return nextIsWorkTime;
+      });
+      setTimeout(handleStart, 0);
     }
-  }, [time, isRunning]);
+  }, [time]);
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
