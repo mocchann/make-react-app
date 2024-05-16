@@ -17,10 +17,7 @@ export const execApiAndSetWeatherData = async (
 
   const responses = await fetchWeatherApi(OPEN_API_URL, requestParams);
 
-  const fetchWeatherApiResult = generateWetherCondition(
-    responses[0].daily(),
-    responses[0].utcOffsetSeconds()
-  );
+  const fetchWeatherApiResult = generateWetherCondition(responses[0].daily());
 
   setWeatherData((beforeWeatherData) => ({
     ...beforeWeatherData,

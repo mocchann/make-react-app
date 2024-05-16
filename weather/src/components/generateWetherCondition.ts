@@ -4,13 +4,9 @@ import { weatherConditionType } from "../types/weatherConditionType";
 import { getWeatherConditionValues } from "./getWeatherConditionValues";
 
 export const generateWetherCondition = (
-  daily: VariablesWithTime | null,
-  utcOffsetSeconds: number
+  daily: VariablesWithTime | null
 ): { weatherCondition: weatherConditionType } => {
-  const weeklyWeatherDateTime = generateWeeklyWeatherDateTime(
-    daily,
-    utcOffsetSeconds
-  );
+  const weeklyWeatherDateTime = generateWeeklyWeatherDateTime(daily);
   const weatherCode = getWeatherConditionValues(daily, 0);
   const temperature2mMax = getWeatherConditionValues(daily, 1);
   const temperature2mMin = getWeatherConditionValues(daily, 2);
