@@ -3,6 +3,9 @@ import { generateWeeklyWeatherDateTime } from "./generateWeeklyWeatherDateTime";
 import { weatherConditionType } from "../types/weatherConditionType";
 import { getWeatherConditionValues } from "./getWeatherConditionValues";
 
+/**
+ * useStateに天気情報をセットするためにオブジェクトをデータ加工して返す
+ */
 export const generateWetherCondition = (
   daily: VariablesWithTime | null
 ): { weatherCondition: weatherConditionType } => {
