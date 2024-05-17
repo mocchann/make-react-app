@@ -13,6 +13,6 @@ export const generateWeeklyWeatherDateTime = (
     weatherCondition.interval()
   );
 
-  // Dateオブジェクトはミリ秒で扱うため、秒に変換して返す
+  // 数値の配列をDateオブジェクトに変換する(Dateオブジェクトはミリ秒で扱うため、秒に変換して返す。これやらないと1970年が出ちゃう)
   return weekRange.map((t) => new Date(t * 1000));
 };
