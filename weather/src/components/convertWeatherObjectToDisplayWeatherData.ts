@@ -2,7 +2,9 @@ import { weatherConditionType } from "../types/weatherConditionType";
 import { getDayOfWeek } from "./getDayOfWeek";
 import { getWeatherFromCode } from "./getWeatherFromCode";
 
-export const formatWeatherData = (weatherCondition: weatherConditionType) => {
+export const convertWeatherObjectToDisplayWeatherData = (
+  weatherCondition: weatherConditionType
+) => {
   return weatherCondition.weeklyWeatherDateTime.map((_, i: number) => {
     const weeklyWeatherDateTime = getDayOfWeek(
       weatherCondition.weeklyWeatherDateTime[i].toString()

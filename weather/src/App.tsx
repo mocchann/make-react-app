@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { weatherDataType } from "./types/weatherDataType";
 import { execApiAndSetWeatherData } from "./components/execApiAndSetWeatherData";
-import { formatWeatherData } from "./components/formatWeatherData";
+import { convertWeatherObjectToDisplayWeatherData } from "./components/convertWeatherObjectToDisplayWeatherData";
 
 const initialWeatherData: weatherDataType = {
   weatherCondition: {
@@ -38,7 +38,9 @@ export const Weather = () => {
 
   if (!weatherData) return <div>loading...</div>;
 
-  const formattedWeatherData = formatWeatherData(weatherData.weatherCondition);
+  const formattedWeatherData = convertWeatherObjectToDisplayWeatherData(
+    weatherData.weatherCondition
+  );
 
   return (
     <>
