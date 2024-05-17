@@ -1,3 +1,6 @@
+/**
+ * 文字列型のdateを受け取りFRONT表示のため年月日曜日の形式に変換する
+ */
 export const getDayOfWeek = (dateString: string): string => {
   const date = new Date(dateString);
 
