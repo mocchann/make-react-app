@@ -1,14 +1,14 @@
 import { VariablesWithTime } from "@openmeteo/sdk/variables-with-time";
 import { generateWeeklyWeatherDateTime } from "./generateWeeklyWeatherDateTime";
-import { weatherConditionType } from "../types/weatherConditionType";
 import { getWeatherConditionValues } from "./getWeatherConditionValues";
+import { weatherDataType } from "../types/weatherDataType";
 
 /**
  * useStateに天気情報をセットするためにオブジェクトをデータ加工して返す
  */
 export const generateWetherCondition = (
   daily: VariablesWithTime | null
-): { weatherCondition: weatherConditionType } => {
+): Pick<weatherDataType, "weatherCondition"> => {
   const weeklyWeatherDateTime = generateWeeklyWeatherDateTime(daily);
   const weatherCode = getWeatherConditionValues(daily, 0);
   const temperature2mMax = getWeatherConditionValues(daily, 1);
