@@ -44,7 +44,7 @@ export const Weather = () => {
       const weeklyWeatherDateTime = getDayOfWeek(
         weatherData.weatherCondition.weeklyWeatherDateTime[i].toString()
       );
-      const wether = getWeatherFromCode(
+      const weather = getWeatherFromCode(
         weatherData.weatherCondition.weatherCode[i]
       );
       const temperature2mMax =
@@ -56,7 +56,7 @@ export const Weather = () => {
 
       return {
         weeklyWeatherDateTime,
-        wether,
+        weather,
         temperature2mMax,
         temperature2mMin,
         precipitationProbabilityMean,
@@ -74,7 +74,7 @@ export const Weather = () => {
               {i === 1 && <h2>週間天気予報</h2>}
               <hr />
               <p>{data.weeklyWeatherDateTime}</p>
-              <p>{`天気: ${data.wether}`}</p>
+              <p>{`天気: ${data.weather}`}</p>
               <p>{`最高気温: ${data.temperature2mMax} °C`}</p>
               <p>{`最低気温: ${data.temperature2mMin} °C`}</p>
               <p>{`降水確率: ${data.precipitationProbabilityMean} %`}</p>
