@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { getWeatherFromCode } from "./components/getWeatherFromCode";
-import { getDayOfWeek } from "./components/getDayOfWeek";
 import { weatherDataType } from "./types/weatherDataType";
 import { execApiAndSetWeatherData } from "./components/execApiAndSetWeatherData";
+import { formatWeatherData } from "./components/formatWeatherData";
 
 const initialWeatherData: weatherDataType = {
   weatherCondition: {
@@ -39,36 +38,14 @@ export const Weather = () => {
 
   if (!weatherData) return <div>loading...</div>;
 
-  const formattedWeatherData =
-    weatherData.weatherCondition.weeklyWeatherDateTime.map((_, i: number) => {
-      const weeklyWeatherDateTime = getDayOfWeek(
-        weatherData.weatherCondition.weeklyWeatherDateTime[i].toString()
-      );
-      const weather = getWeatherFromCode(
-        weatherData.weatherCondition.weatherCode[i]
-      );
-      const temperature2mMax =
-        weatherData.weatherCondition.temperature2mMax[i].toFixed(1);
-      const temperature2mMin =
-        weatherData.weatherCondition.temperature2mMin[i].toFixed(1);
-      const precipitationProbabilityMean =
-        weatherData.weatherCondition.precipitationProbabilityMean[i].toFixed(1);
-
-      return {
-        weeklyWeatherDateTime,
-        weather,
-        temperature2mMax,
-        temperature2mMin,
-        precipitationProbabilityMean,
-      };
-    });
+  const formattedWeatherData = formatWeatherData(weatherData.weatherCondition);
 
   return (
     <>
       <h1>Weather App</h1>
       {
         <>
-          {formattedWeatherData.map((data, i) => (
+          {formattedWeatherData.map((data, i: number) => (
             <div key={i}>
               {i === 0 && <h2>今日の天気</h2>}
               {i === 1 && <h2>週間天気予報</h2>}
