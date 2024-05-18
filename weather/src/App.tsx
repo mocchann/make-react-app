@@ -3,7 +3,7 @@ import { weatherDataType } from "./types/weatherDataType";
 import { convertWeatherObjectToDisplayWeatherData } from "./components/convertWeatherObjectToDisplayWeatherData";
 import { getWeatherForecastCurrentLocation } from "./components/getWeatherForecastCurrentLocation";
 import { Button } from "./components/Button";
-import { prefLocation } from "./constants/prefLocation";
+import { prefArray } from "./constants/prefArray";
 
 const initialWeatherData: weatherDataType = {
   weatherCondition: {
@@ -30,16 +30,6 @@ export const Weather = () => {
   const formattedWeatherData = convertWeatherObjectToDisplayWeatherData(
     weatherData.weatherCondition
   );
-
-  const prefArray: (keyof typeof prefLocation)[] = [
-    "tokyo",
-    "saitama",
-    "chiba",
-    "kanagawa",
-    "nagano",
-    "okayama",
-    "fukuoka",
-  ];
 
   return (
     <>
