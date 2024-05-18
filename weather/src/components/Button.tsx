@@ -8,7 +8,7 @@ type Props = {
   locationKey: keyof typeof prefLocation;
 };
 
-export const Button = ({
+export const PrefButton = ({
   setWeatherData,
   setDisplayLocation,
   locationKey,

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { weatherDataType } from "./types/weatherDataType";
 import { convertWeatherObjectToDisplayWeatherData } from "./components/convertWeatherObjectToDisplayWeatherData";
 import { getWeatherForecastCurrentLocation } from "./components/getWeatherForecastCurrentLocation";
-import { Button } from "./components/Button";
+import { PrefButton } from "./components/Button";
 import { prefArray } from "./constants/prefArray";
 
 const initialWeatherData: weatherDataType = {
@@ -35,7 +35,7 @@ export const Weather = () => {
     <>
       <h1>Weather App</h1>
       {prefArray.map((locationKey, i) => (
-        <Button
+        <PrefButton
           key={i}
           setWeatherData={setWeatherData}
           setDisplayLocation={setDisplayLocation}
