@@ -2,6 +2,9 @@ import { weatherDataType } from "../types/weatherDataType";
 import { getDayOfWeek } from "./getDayOfWeek";
 import { getWeatherFromCode } from "./getWeatherFromCode";
 
+/**
+ * front表示のためオブジェクトから各天気データを取り出す
+ */
 export const convertWeatherObjectToDisplayWeatherData = (
   weatherCondition: weatherDataType["weatherCondition"]
 ) => {
