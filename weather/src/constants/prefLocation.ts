@@ -1,4 +1,4 @@
-export const prefectures = {
+export const prefLocation = {
   current: {
     name: "現在地",
     latitude: 0,
