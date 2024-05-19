@@ -35,6 +35,12 @@ export const Weather = () => {
     }
 
     setDisplayLocation("現在地");
+    if (
+      JSON.stringify(weatherData.weatherCondition) ===
+      JSON.stringify(result.weatherCondition)
+    ) {
+      return;
+    }
     setWeatherData((beforeWeatherData) => ({
       ...beforeWeatherData,
       weatherCondition: result.weatherCondition,
