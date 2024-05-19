@@ -49,7 +49,10 @@ export const Weather = () => {
     setIsLoading(false);
   };
 
-  const formattedWeatherData = formatDisplayWeatherData(weatherData);
+  const formattedWeatherData = useMemo(
+    () => formatDisplayWeatherData(weatherData),
+    [weatherData]
+  );
 
   const prefArray = useMemo(() => generatePrefectures(), []);
 
