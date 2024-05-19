@@ -44,7 +44,7 @@ export const Weather = () => {
 
   const formattedWeatherData = convertWeatherObjectToDisplayWeatherData(
     weatherData.weatherCondition
-  );
+  const prefArray = useMemo(() => generatePrefectures(), []);
 
   return (
     <>
