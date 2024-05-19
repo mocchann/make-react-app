@@ -1,6 +1,6 @@
+import { VariablesWithTime } from "@openmeteo/sdk/variables-with-time";
 import { prefLocation } from "../constants/prefLocation";
 import { execApiRequest } from "../apis/execApiRequest";
-import { WeatherDataType } from "../types/WeatherDataType";
 
 type Props = {
   locationKey: keyof typeof prefLocation;
@@ -8,7 +8,7 @@ type Props = {
 
 export const getWeatherForecastPrefLocation = async ({
   locationKey,
-}: Props): Promise<WeatherDataType | void> => {
+}: Props): Promise<VariablesWithTime | null | void> => {
   try {
     return await execApiRequest(
       prefLocation[locationKey].latitude,

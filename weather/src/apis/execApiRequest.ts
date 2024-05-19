@@ -1,13 +1,12 @@
 import { fetchWeatherApi } from "openmeteo";
+import { VariablesWithTime } from "@openmeteo/sdk/variables-with-time";
 import { dailyWeatherVariables } from "../constants/dailyWeatherVariables";
 import { OPEN_API_URL } from "../constants/openApiUrl";
-import { formatWeatherVariables } from "./formatWeatherVariables";
-import { WeatherDataType } from "../types/WeatherDataType";
 
 export const execApiRequest = async (
   latitude: number,
   longitude: number
-): Promise<WeatherDataType> => {
+): Promise<VariablesWithTime | null> => {
   const requestParams = {
     latitude: latitude,
     longitude: longitude,
@@ -16,5 +15,5 @@ export const execApiRequest = async (
 
   const responses = await fetchWeatherApi(OPEN_API_URL, requestParams);
 
-  return formatWeatherVariables(responses[0].daily());
+  return responses[0].daily();
 };

@@ -1,4 +1,5 @@
 import { prefLocation } from "../constants/prefLocation";
+import { formatWeatherVariables } from "../functions/formatWeatherVariables";
 import { getWeatherForecastPrefLocation } from "../functions/getWeatherForecastPrefLocation";
 import { WeatherDataType } from "../types/WeatherDataType";
 
@@ -16,12 +17,16 @@ export const PrefButton = ({
   locationKey,
 }: Props): JSX.Element => {
   const execute = async (): Promise<void> => {
-    const result = await getWeatherForecastPrefLocation({ locationKey });
+    const dailyWeatherVariables = await getWeatherForecastPrefLocation({
+      locationKey,
+    });
 
-    if (!result) {
+    if (!dailyWeatherVariables) {
       console.error("天気情報の取得に失敗");
       return;
     }
+
+    const result = formatWeatherVariables(dailyWeatherVariables);
 
     if (
       JSON.stringify(weatherData.weatherCondition) ===
