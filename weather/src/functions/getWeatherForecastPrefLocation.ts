@@ -1,6 +1,6 @@
 import { prefLocation } from "../constants/prefLocation";
-import { weatherDataType } from "../types/weatherDataType";
-import { execApiRequest } from "./execApiRequest";
+import { execApiRequest } from "../apis/execApiRequest";
+import { WeatherDataType } from "../types/WeatherDataType";
 
 type Props = {
   locationKey: keyof typeof prefLocation;
@@ -8,7 +8,7 @@ type Props = {
 
 export const getWeatherForecastPrefLocation = async ({
   locationKey,
-}: Props): Promise<Pick<weatherDataType, "weatherCondition"> | void> => {
+}: Props): Promise<WeatherDataType | void> => {
   try {
     return await execApiRequest(
       prefLocation[locationKey].latitude,
