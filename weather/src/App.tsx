@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { weatherDataType } from "./types/weatherDataType";
-import { convertWeatherObjectToDisplayWeatherData } from "./components/convertWeatherObjectToDisplayWeatherData";
-import { getWeatherForecastCurrentLocation } from "./components/getWeatherForecastCurrentLocation";
-import { prefArray } from "./constants/prefArray";
+import { useState, useEffect, useMemo } from "react";
+import { getWeatherForecastCurrentLocation } from "./functions/getWeatherForecastCurrentLocation";
+import { generatePrefectures } from "./helpers/generatePrefectures";
 import { PrefButton } from "./components/PrefButton";
+import { formatDisplayWeatherData } from "./functions/formatDisplayWeatherData";
+import { DisplayWeather } from "./components/DisplayWeather";
 import { WeatherDataType } from "./types/WeatherDataType";
 
 const initialWeatherData: WeatherDataType = {
@@ -26,7 +26,7 @@ export const Weather = () => {
     execute();
   }, []);
 
-  const execute = async () => {
+  const execute = async (): Promise<void> => {
     const result = await getWeatherForecastCurrentLocation();
 
     if (!result) {
@@ -41,6 +41,7 @@ export const Weather = () => {
     ) {
       return;
     }
+
     setWeatherData((beforeWeatherData) => ({
       ...beforeWeatherData,
       weatherCondition: result.weatherCondition,
@@ -59,12 +60,13 @@ export const Weather = () => {
       {prefArray.map((locationKey, i) => (
         <PrefButton
           key={i}
+          weatherData={weatherData}
           setWeatherData={setWeatherData}
           setDisplayLocation={setDisplayLocation}
           locationKey={locationKey}
         />
       ))}
-      {isLoading && <p>お天気情報を取得中っだよおおおおおお...</p>}
+      {isLoading && <p>お天気情報を取得中...</p>}
       {formattedWeatherData.map((data, i: number) => (
         <DisplayWeather
           key={i}
