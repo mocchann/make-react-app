@@ -4,8 +4,9 @@ import { convertWeatherObjectToDisplayWeatherData } from "./components/convertWe
 import { getWeatherForecastCurrentLocation } from "./components/getWeatherForecastCurrentLocation";
 import { prefArray } from "./constants/prefArray";
 import { PrefButton } from "./components/PrefButton";
+import { WeatherDataType } from "./types/WeatherDataType";
 
-const initialWeatherData: weatherDataType = {
+const initialWeatherData: WeatherDataType = {
   weatherCondition: {
     weeklyWeatherDateTimes: [],
     weatherCodes: [],
@@ -17,7 +18,7 @@ const initialWeatherData: weatherDataType = {
 
 export const Weather = () => {
   const [weatherData, setWeatherData] =
-    useState<weatherDataType>(initialWeatherData);
+    useState<WeatherDataType>(initialWeatherData);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [displayLocation, setDisplayLocation] = useState<string>("");
 
