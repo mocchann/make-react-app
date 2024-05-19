@@ -1,9 +1,4 @@
 export const prefLocation = {
-  current: {
-    name: "現在地",
-    latitude: 0,
-    longitude: 0,
-  },
   nagasaki: {
     name: "長崎",
     latitude: 32.82823877610394,
