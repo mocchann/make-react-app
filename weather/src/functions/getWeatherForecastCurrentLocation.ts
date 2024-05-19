@@ -1,8 +1,8 @@
+import { VariablesWithTime } from "@openmeteo/sdk/variables-with-time";
 import { execApiRequest } from "../apis/execApiRequest";
-import { WeatherDataType } from "../types/WeatherDataType";
 
 export const getWeatherForecastCurrentLocation =
-  async (): Promise<WeatherDataType | void> => {
+  async (): Promise<VariablesWithTime | null | void> => {
     try {
       const position = await new Promise<GeolocationPosition>(
         (resolve, reject) => {
