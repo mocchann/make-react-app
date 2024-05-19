@@ -1,6 +1,9 @@
-import { execApiAndSetWeatherData } from "./execApiAndSetWeatherData";
+import { weatherDataType } from "../types/weatherDataType";
+import { execApiRequest } from "./execApiRequest";
 
-export const getWeatherForecastCurrentLocation = async () => {
+export const getWeatherForecastCurrentLocation = async (): Promise<
+  Pick<weatherDataType, "weatherCondition"> | Promise<void>
+> => {
   try {
     const position = await new Promise<GeolocationPosition>(
       (resolve, reject) => {
@@ -8,7 +11,7 @@ export const getWeatherForecastCurrentLocation = async () => {
       }
     );
     const { latitude, longitude } = position.coords;
-    return await execApiAndSetWeatherData(latitude, longitude);
+    return await execApiRequest(latitude, longitude);
   } catch (error) {
     console.error(error);
   }
