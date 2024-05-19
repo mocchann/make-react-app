@@ -1,4 +1,4 @@
-export const getWeatherFromCode = (weatherCode: number): string => {
+export const translateWeatherCode = (weatherCode: number): string => {
   switch (weatherCode) {
     case 0:
       return "晴天🌞";

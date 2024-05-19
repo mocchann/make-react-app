@@ -1,64 +1,79 @@
-import { useState, useEffect } from "react";
-import { weatherDataType } from "./types/weatherDataType";
-import { convertWeatherObjectToDisplayWeatherData } from "./components/convertWeatherObjectToDisplayWeatherData";
-import { getWeatherForecastCurrentLocation } from "./components/getWeatherForecastCurrentLocation";
-import { PrefButton } from "./components/Button";
-import { prefArray } from "./constants/prefArray";
+import { useState, useEffect, useMemo } from "react";
+import { getWeatherForecastCurrentLocation } from "./functions/getWeatherForecastCurrentLocation";
+import { generatePrefectures } from "./helpers/generatePrefectures";
+import { PrefButton } from "./components/PrefButton";
+import { formatDisplayWeatherData } from "./functions/formatDisplayWeatherData";
+import { DisplayWeather } from "./components/DisplayWeather";
+import { WeatherDataType } from "./types/WeatherDataType";
 
-const initialWeatherData: weatherDataType = {
+const initialWeatherData: WeatherDataType = {
   weatherCondition: {
-    weeklyWeatherDateTime: [],
-    weatherCode: [],
-    temperature2mMax: [],
-    temperature2mMin: [],
-    precipitationProbabilityMean: [],
+    weeklyWeatherDateTimes: [],
+    weatherCodes: [],
+    temperatures2mMax: [],
+    temperatures2mMin: [],
+    precipitationProbabilitiesMean: [],
   },
-  currentWeather: { weathercode: 0 },
 };
 
 export const Weather = () => {
   const [weatherData, setWeatherData] =
-    useState<weatherDataType>(initialWeatherData);
+    useState<WeatherDataType>(initialWeatherData);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [displayLocation, setDisplayLocation] = useState<string>("現在地");
+  const [displayLocation, setDisplayLocation] = useState<string>("");
 
   useEffect(() => {
-    getWeatherForecastCurrentLocation(setWeatherData);
-    setIsLoading(false);
+    execute();
   }, []);
 
-  const formattedWeatherData = convertWeatherObjectToDisplayWeatherData(
-    weatherData.weatherCondition
-  );
+  const execute = async (): Promise<void> => {
+    const result = await getWeatherForecastCurrentLocation();
+
+    if (!result) {
+      console.error("天気情報の取得に失敗");
+      return;
+    }
+
+    setDisplayLocation("現在地");
+    if (
+      JSON.stringify(weatherData.weatherCondition) ===
+      JSON.stringify(result.weatherCondition)
+    ) {
+      return;
+    }
+
+    setWeatherData((beforeWeatherData) => ({
+      ...beforeWeatherData,
+      weatherCondition: result.weatherCondition,
+    }));
+    setIsLoading(false);
+  };
+
+  const formattedWeatherData = formatDisplayWeatherData(weatherData);
+
+  const prefArray = useMemo(() => generatePrefectures(), []);
 
   return (
     <>
       <h1>Weather App</h1>
+      <button onClick={execute}>現在地</button>
       {prefArray.map((locationKey, i) => (
         <PrefButton
           key={i}
+          weatherData={weatherData}
           setWeatherData={setWeatherData}
           setDisplayLocation={setDisplayLocation}
           locationKey={locationKey}
         />
       ))}
-      {isLoading && <p>お天気情報を取得中っだよおおおおおお...</p>}
+      {isLoading && <p>お天気情報を取得中...</p>}
       {formattedWeatherData.map((data, i: number) => (
-        <div key={i}>
-          {i === 0 && (
-            <>
-              <h2>{displayLocation}</h2>
-              <h3>今日の天気</h3>
-            </>
-          )}
-          {i === 1 && <h3>週間天気予報</h3>}
-          <hr />
-          <p>{data.weeklyWeatherDateTime}</p>
-          <p>{`天気: ${data.weather}`}</p>
-          <p>{`最高気温: ${data.temperature2mMax} °C`}</p>
-          <p>{`最低気温: ${data.temperature2mMin} °C`}</p>
-          <p>{`降水確率: ${data.precipitationProbabilityMean} %`}</p>
-        </div>
+        <DisplayWeather
+          key={i}
+          data={data}
+          i={i}
+          displayLocation={displayLocation}
+        />
       ))}
     </>
   );

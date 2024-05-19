@@ -3,7 +3,7 @@
  * ex. generateWeekRange(0, 10, 2) => [0, 2, 4, 6, 8]
  * HACK: この実装直感的にわかりづらすぎるのでどうにかしたい
  */
-export const generateWeekRange = (
+export const calculateWeekNumbers = (
   start: number,
   stop: number,
   step: number
