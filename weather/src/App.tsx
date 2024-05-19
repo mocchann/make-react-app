@@ -20,26 +20,27 @@ export const Weather = () => {
   const [weatherData, setWeatherData] =
     useState<weatherDataType>(initialWeatherData);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [displayLocation, setDisplayLocation] = useState<string>("現在地");
+  const [displayLocation, setDisplayLocation] = useState<string>("");
 
   useEffect(() => {
-    const fetchWeatherData = async () => {
-      const result = await getWeatherForecastCurrentLocation();
-
-      if (!result) {
-        console.error("天気情報の取得に失敗");
-        return;
-      }
-
-      setWeatherData((beforeWeatherData) => ({
-        ...beforeWeatherData,
-        weatherCondition: result.weatherCondition,
-      }));
-      setIsLoading(false);
-    };
-
-    fetchWeatherData();
+    execute();
   }, []);
+
+  const execute = async () => {
+    const result = await getWeatherForecastCurrentLocation();
+
+    if (!result) {
+      console.error("天気情報の取得に失敗");
+      return;
+    }
+
+    setDisplayLocation("現在地");
+    setWeatherData((beforeWeatherData) => ({
+      ...beforeWeatherData,
+      weatherCondition: result.weatherCondition,
+    }));
+    setIsLoading(false);
+  };
 
   const formattedWeatherData = convertWeatherObjectToDisplayWeatherData(
     weatherData.weatherCondition
@@ -48,6 +49,7 @@ export const Weather = () => {
   return (
     <>
       <h1>Weather App</h1>
+      <button onClick={execute}>現在地</button>
       {prefArray.map((locationKey, i) => (
         <PrefButton
           key={i}
