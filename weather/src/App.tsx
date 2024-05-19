@@ -5,6 +5,7 @@ import { PrefButton } from "./components/PrefButton";
 import { formatDisplayWeatherData } from "./functions/formatDisplayWeatherData";
 import { DisplayWeather } from "./components/DisplayWeather";
 import { WeatherDataType } from "./types/WeatherDataType";
+import { formatWeatherVariables } from "./functions/formatWeatherVariables";
 
 const initialWeatherData: WeatherDataType = {
   weatherCondition: {
@@ -27,14 +28,15 @@ export const Weather = () => {
   }, []);
 
   const execute = async (): Promise<void> => {
-    const result = await getWeatherForecastCurrentLocation();
+    const dailyWeatherVariables = await getWeatherForecastCurrentLocation();
 
-    if (!result) {
+    if (!dailyWeatherVariables) {
       console.error("天気情報の取得に失敗");
       return;
     }
 
-    setDisplayLocation("現在地");
+    const result = formatWeatherVariables(dailyWeatherVariables);
+
     if (
       JSON.stringify(weatherData.weatherCondition) ===
       JSON.stringify(result.weatherCondition)
@@ -42,6 +44,7 @@ export const Weather = () => {
       return;
     }
 
+    setDisplayLocation("現在地");
     setWeatherData((beforeWeatherData) => ({
       ...beforeWeatherData,
       weatherCondition: result.weatherCondition,
