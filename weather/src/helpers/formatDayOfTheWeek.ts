@@ -1,7 +1,7 @@
 /**
  * 文字列型のdateを受け取りFRONT表示のため年月日曜日の形式に変換する
  */
-export const getDayOfWeek = (dateString: string): string => {
+export const formatDayOfTheWeek = (dateString: string): string => {
   const date = new Date(dateString);
 
   const dayOfWeek = ["日", "月", "火", "水", "木", "金", "土"];
