@@ -51,6 +51,7 @@ export const Weather = () => {
       {prefArray.map((locationKey, i) => (
         <PrefButton
           key={i}
+          setWeatherData={setWeatherData}
           setDisplayLocation={setDisplayLocation}
           locationKey={locationKey}
         />
