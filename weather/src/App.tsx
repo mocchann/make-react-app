@@ -7,13 +7,12 @@ import { PrefButton } from "./components/PrefButton";
 
 const initialWeatherData: weatherDataType = {
   weatherCondition: {
-    weeklyWeatherDateTime: [],
-    weatherCode: [],
-    temperature2mMax: [],
-    temperature2mMin: [],
-    precipitationProbabilityMean: [],
+    weeklyWeatherDateTimes: [],
+    weatherCodes: [],
+    temperatures2mMax: [],
+    temperatures2mMin: [],
+    precipitationProbabilitiesMean: [],
   },
-  currentWeather: { weathercode: 0 },
 };
 
 export const Weather = () => {
