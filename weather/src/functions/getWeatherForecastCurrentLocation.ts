@@ -1,8 +1,8 @@
-import { weatherDataType } from "../types/weatherDataType";
-import { execApiRequest } from "./execApiRequest";
+import { execApiRequest } from "../apis/execApiRequest";
+import { WeatherDataType } from "../types/WeatherDataType";
 
 export const getWeatherForecastCurrentLocation = async (): Promise<
-  Pick<weatherDataType, "weatherCondition"> | Promise<void>
+  WeatherDataType | Promise<void>
 > => {
   try {
     const position = await new Promise<GeolocationPosition>(
