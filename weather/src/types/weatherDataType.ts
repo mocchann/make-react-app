@@ -1,10 +1,9 @@
-export type weatherDataType = {
+export type WeatherDataType = {
   weatherCondition: {
-    weeklyWeatherDateTime: Date[];
-    weatherCode: Float32Array | never[];
-    temperature2mMax: Float32Array | never[];
-    temperature2mMin: Float32Array | never[];
-    precipitationProbabilityMean: Float32Array | never[];
+    weeklyWeatherDateTimes: Date[];
+    weatherCodes: Float32Array | never[];
+    temperatures2mMax: Float32Array | never[];
+    temperatures2mMin: Float32Array | never[];
+    precipitationProbabilitiesMean: Float32Array | never[];
   };
-  currentWeather: { weathercode: number };
 };
