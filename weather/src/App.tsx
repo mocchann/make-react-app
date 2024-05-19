@@ -66,21 +66,12 @@ export const Weather = () => {
       ))}
       {isLoading && <p>お天気情報を取得中っだよおおおおおお...</p>}
       {formattedWeatherData.map((data, i: number) => (
-        <div key={i}>
-          {i === 0 && (
-            <>
-              <h2>{displayLocation}</h2>
-              <h3>今日の天気</h3>
-            </>
-          )}
-          {i === 1 && <h3>週間天気予報</h3>}
-          <hr />
-          <p>{data.weeklyWeatherDateTime}</p>
-          <p>{`天気: ${data.weather}`}</p>
-          <p>{`最高気温: ${data.temperature2mMax} °C`}</p>
-          <p>{`最低気温: ${data.temperature2mMin} °C`}</p>
-          <p>{`降水確率: ${data.precipitationProbabilityMean} %`}</p>
-        </div>
+        <DisplayWeather
+          key={i}
+          data={data}
+          i={i}
+          displayLocation={displayLocation}
+        />
       ))}
     </>
   );
