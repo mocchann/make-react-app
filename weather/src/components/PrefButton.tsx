@@ -13,7 +13,7 @@ export const PrefButton = ({
   setDisplayLocation,
   locationKey,
 }: Props): JSX.Element => {
-  const handleClick = async (): Promise<void> => {
+  const execute = async (): Promise<void> => {
     const result = await getWeatherForecastPrefLocation({ locationKey });
 
     if (!result) {
@@ -28,7 +28,5 @@ export const PrefButton = ({
     }));
   };
 
-  return (
-    <button onClick={handleClick}>{prefLocation[locationKey].name}</button>
-  );
+  return <button onClick={execute}>{prefLocation[locationKey].name}</button>;
 };
