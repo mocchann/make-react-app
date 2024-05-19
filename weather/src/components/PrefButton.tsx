@@ -1,14 +1,16 @@
 import { prefLocation } from "../constants/prefLocation";
-import { weatherDataType } from "../types/weatherDataType";
-import { getWeatherForecastPrefLocation } from "./getWeatherForecastPrefLocation";
+import { getWeatherForecastPrefLocation } from "../functions/getWeatherForecastPrefLocation";
+import { WeatherDataType } from "../types/WeatherDataType";
 
 type Props = {
-  setWeatherData: React.Dispatch<React.SetStateAction<weatherDataType>>;
+  weatherData: WeatherDataType;
+  setWeatherData: React.Dispatch<React.SetStateAction<WeatherDataType>>;
   setDisplayLocation: React.Dispatch<React.SetStateAction<string>>;
   locationKey: keyof typeof prefLocation;
 };
 
 export const PrefButton = ({
+  weatherData,
   setWeatherData,
   setDisplayLocation,
   locationKey,
@@ -18,6 +20,13 @@ export const PrefButton = ({
 
     if (!result) {
       console.error("天気情報の取得に失敗");
+      return;
+    }
+
+    if (
+      JSON.stringify(weatherData.weatherCondition) ===
+      JSON.stringify(result.weatherCondition)
+    ) {
       return;
     }
 
