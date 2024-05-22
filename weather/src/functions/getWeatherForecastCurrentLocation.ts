@@ -1,17 +1,18 @@
 import { VariablesWithTime } from "@openmeteo/sdk/variables-with-time";
 import { execApiRequest } from "../apis/execApiRequest";
 
-export const getWeatherForecastCurrentLocation =
-  async (): Promise<VariablesWithTime | null | void> => {
-    try {
-      const position = await new Promise<GeolocationPosition>(
-        (resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject);
-        }
-      );
-      const { latitude, longitude } = position.coords;
-      return await execApiRequest(latitude, longitude);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+type Props = {
+  latitude: number;
+  longitude: number;
+};
+
+export const getWeatherForecastCurrentLocation = async ({
+  latitude,
+  longitude,
+}: Props): Promise<VariablesWithTime | null | void> => {
+  try {
+    return await execApiRequest(latitude, longitude);
+  } catch (error) {
+    console.error(error);
+  }
+};
