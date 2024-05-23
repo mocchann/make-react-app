@@ -24,6 +24,7 @@ export const Weather = () => {
   const [displayLocation, setDisplayLocation] = useState<string>("");
 
   useEffect(() => {
+    // TODO: この実装だと依存配列が存在しない、かつ依存配列にweatherDataを入れると最終的に現在地の天気情報しか表示されなくなるため改修が必要
     execute();
   }, []);
 
