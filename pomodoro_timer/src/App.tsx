@@ -4,53 +4,40 @@ import "./App.css";
 function App() {
   const [time, setTime] = useState<number>(25 * 60);
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const [intervalId, setIntervalId] = useState<number | undefined>(undefined);
-  const [isWorkTime, setIsWorkTime] = useState<boolean>(true);
+  const [intervalId, setIntervalId] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (isRunning) {
+      const id = window.setInterval(() => {
+        setTime((prev) => prev - 1);
+      }, 1000);
+      setIntervalId(id);
+    } else {
+      if (intervalId) {
+        window.clearInterval(intervalId);
+      }
+    }
+  }, [isRunning]);
 
   const handleStart = () => {
-    if (!isRunning) {
-      const id = setInterval(() => {
-        setTime((prevTime) => prevTime - 1);
-      }, 1000);
-
-      setIntervalId(id);
-      setIsRunning(true);
-    }
+    setIsRunning(true);
   };
 
   const handleStop = () => {
-    if (intervalId && isRunning) {
-      clearInterval(intervalId);
-      setIntervalId(undefined);
-      setIsRunning(false);
-    }
+    setIsRunning(false);
   };
 
   const handleReset = () => {
-    handleStop();
+    setIsRunning(false);
     setTime(25 * 60);
   };
-
-  useEffect(() => {
-    if (time <= 0) {
-      handleStop();
-      setIsWorkTime((prevIsWorkTime) => {
-        const nextIsWorkTime = !prevIsWorkTime;
-        setTime(nextIsWorkTime ? 5 * 60 : 25 * 60);
-        return nextIsWorkTime;
-      });
-      setTimeout(handleStart, 0);
-    }
-  }, [time]);
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
 
   return (
     <>
-      <h1>
-        {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-      </h1>
+      <h1>{minutes}:{seconds > 9 ? seconds : `0${seconds}`}</h1>
       <button onClick={handleStart}>start</button>
       <button onClick={handleStop}>stop</button>
       <button onClick={handleReset}>reset</button>
