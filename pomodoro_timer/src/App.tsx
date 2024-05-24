@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-  const [time, setTime] = useState<number>(2 * 60);
+  const [time, setTime] = useState<number>(25 * 60);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [intervalId, setIntervalId] = useState<number | undefined>(undefined);
   const [isWorkTime, setIsWorkTime] = useState<boolean>(true);
@@ -28,7 +28,7 @@ function App() {
 
   const handleReset = () => {
     handleStop();
-    setTime(2 * 60);
+    setTime(25 * 60);
   };
 
   useEffect(() => {
@@ -36,7 +36,7 @@ function App() {
       handleStop();
       setIsWorkTime((prevIsWorkTime) => {
         const nextIsWorkTime = !prevIsWorkTime;
-        setTime(nextIsWorkTime ? 1 * 60 : 2 * 60);
+        setTime(nextIsWorkTime ? 5 * 60 : 25 * 60);
         return nextIsWorkTime;
       });
       setTimeout(handleStart, 0);
