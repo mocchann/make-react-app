@@ -5,6 +5,7 @@ function App() {
   const [time, setTime] = useState<number>(25 * 60);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [intervalId, setIntervalId] = useState<number | null>(null);
+  const [isWork, setIsWork] = useState<boolean>(true);
 
   useEffect(() => {
     if (isRunning) {
@@ -29,15 +30,23 @@ function App() {
 
   const handleReset = () => {
     setIsRunning(false);
-    setTime(25 * 60);
+    setIsWork(!isWork);
+    setTime(isWork ? 5 * 60 : 25 * 60);
   };
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
 
+  if (minutes === 0 && seconds === 0) {
+    handleReset();
+    handleStart();
+  }
+
   return (
     <>
-      <h1>{minutes}:{seconds > 9 ? seconds : `0${seconds}`}</h1>
+      <h1>
+        {minutes}:{seconds > 9 ? seconds : `0${seconds}`}
+      </h1>
       <button onClick={handleStart}>start</button>
       <button onClick={handleStop}>stop</button>
       <button onClick={handleReset}>reset</button>
